@@ -21,7 +21,7 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/list', 'ProductController@showList')->name('list');
 
-Route::get('/show/{id}', 'ProductController@showDetail')->name('detail');
+Route::get('/detail/{id}', 'ProductController@showDetail')->name('detail');
 
-Route::post('/destroy{id}', 'ProductController@destroy')->name('list.destroy');
+Route::post('/destroy/{id}', 'ProductController@destroy')->name('list.destroy');
 

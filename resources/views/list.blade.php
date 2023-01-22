@@ -6,7 +6,7 @@
 
 
   <div class="links">
-    <table>
+    <table class="table table-striped">
       <thead>
         <tr>
           <th>商品ID</th>
@@ -29,7 +29,7 @@
             <td>{{ $product->stock }}</td>
             <td>{{ $product->company_id }}</td>
             <td>
-              <a href="" class="btn btn-primary">詳細</a>
+              <a href="{{ route('detail' , ['id'=>$product->id]) }}" class="btn btn-primary">詳細</a>
             </td>
           
             <td>
