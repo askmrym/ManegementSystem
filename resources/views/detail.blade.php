@@ -26,4 +26,7 @@
     </tr>
   </tbody>
 </table>
+      @if (Route::has('list'))
+        <a href="{{ route('list') }}">戻る</a>
+      @endif
 @endsection

@@ -22,6 +22,17 @@ class ProductController extends Controller
 
     }
 
+    public function create(Request $request)
+    {
+        return view('create');
+    }
+
+    public function store(Request $request)
+    {
+        $registerProduct = $this->product->InserProduct($request);
+        return redirect()->route('list');
+    }
+
     public function destroy($id)
     {
         $product = product::find($id);
