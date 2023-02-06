@@ -27,4 +27,4 @@ Route::post('/destroy/{id}', 'ProductController@destroy')->name('list.destroy');
 
 Route::get('/create', 'ProductController@create')->name('create');
 
-Route::post('/store', 'ProductController@store')->name('store');
+Route::post('/store', 'ProductController@store')->name('product.store');

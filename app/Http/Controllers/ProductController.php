@@ -33,6 +33,19 @@ class ProductController extends Controller
         return redirect()->route('list');
     }
 
+    public function img(Request $request){
+        $img = $request->file('img_path');
+        if(isset($img)){
+            $path = $img->store('img','public');
+        }
+        if($path){
+            Product::create([
+                'img_path' => $path,
+            ]);
+        }
+        return redirect()->route('create');
+    }
+
     public function destroy($id)
     {
         $product = product::find($id);

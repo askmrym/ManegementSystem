@@ -4,6 +4,9 @@
 
 <h1>商品一覧</h1>
 
+  <a href="{{ route('create') }}">新規商品登録</a>
+
+
 
   <div class="links">
     <table class="table table-striped">
@@ -42,6 +45,8 @@
         @endforeach
         </tbody>
     </table>
+    
+    
 
   </div>
 
