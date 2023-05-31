@@ -19,7 +19,9 @@ class CreateCompaniesTable extends Migration
             $table->string('street_address');
             $table->string('representative_name');
             $table->timestamps();
-        });
+        
+            
+    });
     }
 
     /**

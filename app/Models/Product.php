@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
-    public function getList() {
-        $products = DB::table('products')->get();
+    public function company()
+    {
+        return $this->belongsTo(Company::class,'company_id');
+       
+    }    
 
-        return $products;
-
-    }
     protected $table = 'products';
 
     protected $primaryKey = 'id';
@@ -29,20 +29,10 @@ class Product extends Model
     ];
 
 
-    public function findAllProducts()
-    {
-        return Product::all();
-    }
 
-    public function InsertProduct($request)
+    //削除処理
+    public function deleteProductId($id)
     {
-        return $this->create([
-            'product_name' =>$request->product_name,
-            'company_id' =>$request->company_id,
-            'price' =>$request->price,
-            'stock' =>$request->stock,
-            'comment' =>$request->comment,
-            'img_path' =>$request->img_path,
-        ]);
-    }
+        return $this->destroy($id);
+    }    
 }

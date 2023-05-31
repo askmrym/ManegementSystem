@@ -20,8 +20,8 @@ class CreateProductsTable extends Migration
             $table->string('product_name');
             $table->integer('price');
             $table->integer('stock');
-            $table->text('comment');
-            $table->string('img_path');
+            $table->text('comment')->nullable();
+            $table->text('img_path')->nullable();
             $table->timestamps();
         });
     }

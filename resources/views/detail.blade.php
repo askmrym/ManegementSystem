@@ -16,17 +16,21 @@
   </thead>
   <tbody>
     <tr>
-      <td>{{ $product->id }}</td>
-      <td>{{ $product->img_path }}</td>
-      <td>{{ $product->product_name }}</td>
-      <td>{{ $product->company_id }}</td>
-      <td>{{ $product->price }}</td>
-      <td>{{ $product->stock }}</td>
-      <td>{{ $product->comment }}</td>
+      <td>{{ $products->id }}</td>
+      <td><img src="{{asset('storage/'.$products->img_path) }}" width=25%></td>
+      <td>{{ $products->product_name }}</td>
+      <td>{{ $products->company->company_name }}</td>
+      <td>{{ $products->price }}</td>
+      <td>{{ $products->stock }}</td>
+      <td>{{ $products->comment }}</td>
     </tr>
   </tbody>
-</table>
-      @if (Route::has('list'))
-        <a href="{{ route('list') }}">戻る</a>
-      @endif
+</table> 
+<a href="{{ route('edit', ['id'=>$products->id]) }}" class="btn btn-outline-secondary" role="button">
+        <i class="fa fa-replay mr-1" aria-hidden="true"></i>{{__('編集')}}
+      </a>
+      <a href="{{ route('list')}}" class="btn btn-outline-secondary" role="button">
+        <i class="fa fa-replay mr-1" aria-hidden="true"></i>{{__('戻る')}}
+      </a>
+        
 @endsection
