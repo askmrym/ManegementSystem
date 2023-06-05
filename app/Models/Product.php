@@ -28,6 +28,18 @@ class Product extends Model
         'updated_at',
     ];
 
+    public function serch($keyword, $company_id){
+          
+        $query = Product::query();
+        if(!empty($keyword)){
+         $query->where('product_name', 'LIKE', "%{$keyword}%");
+        }
+        if(!empty($company_id)){
+         $query->where('company_id', 'LIKE', $company_id);
+        }
+        $products = $query->get();
+        return $products;
+    }
 
 
     //削除処理

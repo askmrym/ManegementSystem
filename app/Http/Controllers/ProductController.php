@@ -19,31 +19,21 @@ class ProductController extends Controller
 
     public function showList(Request $request) {
 
-       //検索機能     
-       $products = Product::paginate(20);
-       $keyword = $request->input('keyword');
-       $company_id = $request->input('company_id');
-       $query = Product::query();
-
-       if(!empty($keyword)){
-        $query->where('product_name', 'LIKE', "%{$keyword}%");
-       }
-       if(!empty($company_id)){
-        $query->where('company_id', 'LIKE', $company_id);
-       }
-
-       $products = $query->get();
+          //検索機能  
+          $keyword = $request->input('keyword');
+          $company_id = $request->input('company_id');  
+       
+       
+       $products = $this->product->serch($keyword, $company_id);
 
        //会社名DB取得
-       $companies = Company::all();
-
-       
+       $companies = Company::all();       
 
         return view('list',[
+            'products' => $products,
             'keyword' => $keyword,
             'company_id' => $company_id,
-            'products'=> $products,
-            'companies'=> $companies
+            'companies' => $companies,
         ]);
         
 
