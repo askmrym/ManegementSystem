@@ -59,6 +59,7 @@ class ProductController extends Controller
     //更新処理
    public function update(ProductRequest $request, $id)
    {
+    
     $products = Product::find($id);
     $img_path = '';
 
@@ -72,6 +73,7 @@ class ProductController extends Controller
         'comment' =>$request->comment,
 
     ];
+    
     if($request->hasfile('img_path'))
     {
         if ($img_cur !== '' && !is_null($img_cur)){
@@ -81,14 +83,28 @@ class ProductController extends Controller
     $img_path = $request->file('img_path')->store('image','public');
     $data['img_path'] = $img_path;
     }
-
+    try{
+    
+        DB::beginTransaction();
+    
     $products->update($data);
+    DB::commit();
+    }catch (Exception $e) {
+    DB::rollBack();
+    }
     return redirect()->route('detail', $products->id);
     }
 
     //削除機能
     public function destroy($id){
+        try{
+        
         $deleteProduct = $this->product->deleteProductId($id);
+        
+        }catch (\Exception $e) {
+            DB::rollback();
+            return back();
+        }
         return redirect()->route('list');
     }
 
@@ -103,6 +119,8 @@ class ProductController extends Controller
 
    //新規商品登録処理
     public function store(ProductRequest $request){
+        try{
+        DB::beginTransaction();
         $data = $request->validated();
 
         $img_path = '';
@@ -113,7 +131,12 @@ class ProductController extends Controller
         }
         
         Product::create($data);
-        
+        DB::commit();
+    }
+    catch (\Exception $e) {
+        DB::rollback();
+        return back();
+    }
         return redirect()->route('create')->with('flash_message', '登録が完了しました');
         }
         
