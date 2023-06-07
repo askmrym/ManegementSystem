@@ -98,7 +98,7 @@ class ProductController extends Controller
     //削除機能
     public function destroy($id){
         try{
-        
+        DB::beginTransaction();
         $deleteProduct = $this->product->deleteProductId($id);
         
         }catch (\Exception $e) {
