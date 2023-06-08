@@ -23,6 +23,9 @@ class CreateProductsTable extends Migration
             $table->text('comment')->nullable();
             $table->text('img_path')->nullable();
             $table->timestamps();
+
+            
+            
         });
     }
 

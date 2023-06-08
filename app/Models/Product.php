@@ -11,7 +11,11 @@ class Product extends Model
     {
         return $this->belongsTo(Company::class,'company_id');
        
-    }    
+    } 
+    
+    public function sales(){
+        return $this->hasMany('App\Models\Sale');
+     }  
 
     protected $table = 'products';
 
