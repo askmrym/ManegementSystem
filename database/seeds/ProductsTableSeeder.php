@@ -44,5 +44,49 @@ class ProductsTableSeeder extends Seeder
             'img_path' => ''
 
         ]);
+
+        \DB::table('products')->insert([
+            'id' =>'4',
+            'company_id' =>'3',
+            'product_name' =>'コーラ',
+            'price' => '130',
+            'stock' =>'13',
+            'comment' =>'テストコーラ',
+            'img_path' => ''
+
+        ]);
+
+        \DB::table('products')->insert([
+            'id' =>'5',
+            'company_id' =>'3',
+            'product_name' =>'チャイ',
+            'price' => '130',
+            'stock' =>'13',
+            'comment' =>'テストチャイ',
+            'img_path' => ''
+
+        ]);
+
+        \DB::table('products')->insert([
+            'id' =>'6',
+            'company_id' =>'3',
+            'product_name' =>'アールグレイ',
+            'price' => '130',
+            'stock' =>'13',
+            'comment' =>'テストアールグレイ',
+            'img_path' => ''
+
+        ]);
+
+        \DB::table('products')->insert([
+            'id' =>'7',
+            'company_id' =>'3',
+            'product_name' =>'水',
+            'price' => '130',
+            'stock' =>'13',
+            'comment' =>'テスト水',
+            'img_path' => ''
+
+        ]);
     }
 }

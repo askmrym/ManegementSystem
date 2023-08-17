@@ -24,7 +24,8 @@ Route::get('/list', 'ProductController@showList')->name('list');
 
 Route::get('/detail/{id}', 'ProductController@showDetail')->name('detail');
 
-Route::post('/destroy/{id}', 'ProductController@destroy')->name('list.destroy');
+Route::delete('/delete/{id}', 'ProductController@ddelete')
+->name('list.delete');
 
 Route::get('/create', 'ProductController@create')->name('create');
 

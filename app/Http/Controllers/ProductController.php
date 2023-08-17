@@ -19,21 +19,35 @@ class ProductController extends Controller
 
     public function showList(Request $request) {
 
+        
+
           //検索機能  
           $keyword = $request->input('keyword');
           $company_id = $request->input('company_id');  
+          $jougenprice = $request->input('jougenprice');
+          $kagenprice = $request->input('kagenprice');
+          $jougenstock = $request->input('jougenstock');
+          $kagenstock = $request->input('kagenstock');
        
        
-       $products = $this->product->serch($keyword, $company_id);
+       $products = $this->product
+       ->serch($keyword, $company_id, $jougenprice, $kagenprice, $jougenstock, $kagenstock);
+       
 
        //会社名DB取得
-       $companies = Company::all();       
+       $companies = Company::all(); 
+       
+       
 
         return view('list',[
             'products' => $products,
             'keyword' => $keyword,
             'company_id' => $company_id,
             'companies' => $companies,
+            'jougenprice' => $jougenprice,
+            'kagenprice' => $kagenprice,
+            'jougenstock' => $jougenstock,
+            'kagenstock' => $kagenstock
         ]);
         
 
@@ -96,16 +110,29 @@ class ProductController extends Controller
     }
 
     //削除機能
-    public function destroy($id){
-        try{
-        DB::beginTransaction();
-        $deleteProduct = $this->product->deleteProductId($id);
-        
-        }catch (\Exception $e) {
-            DB::rollback();
-            return back();
+    public function delete($id){
+        {
+            try{
+                $this->product->delete($id);
+                $status = "success";
+                $message = "削除が完了しました";
+                $returnArr = [
+                    'status' => $status,
+                    'message' => $message
+                ];
+                return response()->json($returnArr);
+
+            }catch(\Trowable $th){
+               $status= "error";
+               $message = '削除に失敗しました';
+               $returnArr=[
+                'status'=> $status,
+                'message' => $message
+               ];
+
+            return response()->json($returnArr);
+            }
         }
-        return redirect()->route('list');
     }
 
 
