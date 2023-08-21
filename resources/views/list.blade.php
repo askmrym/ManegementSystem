@@ -130,9 +130,9 @@ $( function ()
     {
        $.ajax({
         type: "post",
-        url: '/delete/${id}',
+        url: "{{ route('list.delete' , $product->id) }}", 
         dataType: 'json',
-        data: { "id":id,"_method": "DELETE" }
+        data: { "id":id, "_method": "DELETE" }
        })
        //成功時の処理
       
@@ -142,8 +142,8 @@ $( function ()
         if (res ['status'] == "success" )
         {
 
-          $('#row_${id}' ).remove();
-          flashMessage( id, res["status"], res["message"] );
+          $("#row_${ id }" ).remove();
+          flashMessage( id, res['status'], res['message'] );
         }
        })
 
@@ -156,6 +156,28 @@ $( function ()
        });
       }
       });
+        function flashMessage ( id, status, message )
+        {
+          let bgColor = 'bg-red-300';
+          let dom = `<div id ="flash_${ id }" class="${ bgColor } w-1/2 mx-auto mb-4 p-2 text-white">
+           ${ message }
+        </div>`;
+        if ( status == "error" )
+        {
+            $( ".container" ).append( dom );
+        } else
+        {
+            bgColor = 'bg-blue-300';
+            dom = `<div id ="flash_${ id }" class="${ bgColor } w-1/2 mx-auto mb-4 p-2 text-white">
+           ${ message }
+        </div>`;
+            $( ".container" ).append( dom );
+        }
+        setTimeout( function ()
+        {
+            $( `#flash_${ id }` ).remove();
+        }, 2000 );
+        }
 
       
 
