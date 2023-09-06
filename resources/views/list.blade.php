@@ -13,14 +13,14 @@
     <div>
     <label for="keyword">商品名
       <div>
-    <input type="text" name="keyword" value="{{ $keyword }}">
+    <input class="search" type="text" id="product_name" name="keyword" value="{{ $keyword }}">
     </div>
     </label>  
   </div>
   <div>
     <label for="company_id">メーカー名
       <div>
-        <select class="form_company" id="company_id" name="company_id">
+        <select class="search form_company" id="company_id" name="company_id">
            @foreach($companies as $company)
           <option value="{{ $company->id }}">
           {{$company->company_name}}
@@ -34,11 +34,11 @@
       <label for="price">価格</label>
        <div class="jougen">
         <label>上限</label>
-        <input type="number" name="jougenprice" id="jougenprice" value="{{ $jougenprice }}">
+        <input type="number" name="jougenprice" id="jougenprice" class="search" value="{{ $jougenprice }}">
       </div>
       <div class="kagen">
         <label>下限</label>
-        <input type="number" name="kagenprice" id="kagenprice" value="{{ $kagenprice }}">
+        <input type="number" name="kagenprice" id="kagenprice" class="search" value="{{ $kagenprice }}">
       </div>
     </div>
 
@@ -46,16 +46,16 @@
       <label for="stock">在庫数</label>
        <div class="jougen">
         <label>上限</label>
-        <input type="number" name="jougenstock" id="jougenstock" value="{{ $jougenstock }}">
+        <input type="number" name="jougenstock" id="jougenstock" class="search" value="{{ $jougenstock }}">
       </div>
       <div class="kagen">
         <label>下限</label>
-        <input type="number" name="kagenstock" id="kagenstock" value="{{ $kagenstock }}">
+        <input type="number" name="kagenstock" id="kagenstock" class="search" value="{{ $kagenstock }}">
       </div>
     </div>
   </div>
   <div>
-    <button type="submit">検索</button>
+    <button type="submit" class="search-icon">検索</button>
     <button>
       <a href="{{ route('list')}}" class="text-white">
         クリア
@@ -102,7 +102,7 @@
           
             <td class="px-4 py-3">
             
-              <button  data-product_id="{{$product->id}}" type="submit" class="btn btn-danger" id='delete_button_{{ $product->id}}'>削除</button> 
+              <button  data-product-id="{{$product->id}}" type="submit" class="btn btn-danger" id='delete_button_{{ $product->id}}'>削除</button> 
               </form>
             </td>
             </tr>
@@ -112,76 +112,89 @@
 
     
         <script>
-$( function ()
-{
-  $( "[id^=delete_button]" ).on( "click", function ()
-  {
-    const id = $(this).attr("id").substr(14);
-    console.log(id);
-    
 
-    //csrf対策
-    $.ajaxSetup( {
-      headers: {
-        'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )
-      }
-    });
-    if ( confirm('本当に削除してもいいですか？'))
-    {
-       $.ajax({
-        type: "post",
-        url: "{{ route('list.delete' , $product->id) }}", 
-        dataType: 'json',
-        data: { "id":id, "_method": "DELETE" }
-       })
-       //成功時の処理
-      
+//検索機能
 
-       .done((res) =>
-       {
-        if (res ['status'] == "success" )
-        {
+$(function(){
+$(".search-icon").on('click', function () {
+   //もともとある要素を空にする
 
-          $("#row_${ id }" ).remove();
-          flashMessage( id, res['status'], res['message'] );
-        }
-       })
+ let keyword = $("#product_name").val();
+ let companyName = $("#company_id").val();
+ let jougenprice = $("#jougenprice").val();
+ let kagenprice = $("#kagenprice").val();
+ let jougenstock = $("#jougenstock").val();
+ let kagenstock = $("#kagenstock").val();
 
-       .fail( function ( jqXHR, textStatus, errorThrown )
-       {
-        console.log( jqXHR );
-                    console.log( textStatus );
-                    console.log( errorThrown );
-                    flashMessage( id, 'error', '削除に失敗しました。' );
-       });
-      }
-      });
-        function flashMessage ( id, status, message )
-        {
-          let bgColor = 'bg-red-300';
-          let dom = `<div id ="flash_${ id }" class="${ bgColor } w-1/2 mx-auto mb-4 p-2 text-white">
-           ${ message }
-        </div>`;
-        if ( status == "error" )
-        {
-            $( ".container" ).append( dom );
-        } else
-        {
-            bgColor = 'bg-blue-300';
-            dom = `<div id ="flash_${ id }" class="${ bgColor } w-1/2 mx-auto mb-4 p-2 text-white">
-           ${ message }
-        </div>`;
-            $( ".container" ).append( dom );
-        }
-        setTimeout( function ()
-        {
-            $( `#flash_${ id }` ).remove();
-        }, 2000 );
-        }
+ if(!keyword & companyName & jougenprice & kagenprice & jougenstock & kagenstock){
+  return false;
+ }//検索ワードが全てからの時はなにも返さない
 
-      
+ $.ajax({
+  typr: 'GET',
+  url: "{{ route('list') }}",
+  dataType: 'json'
+
+
+ }).done(function (data) {
+  let html = "";
+  $.each(data, function (list, value){
+    let id = value.id;
+    let img = value.img;
+    let name = value.name;
+    let price = value.price;
+    let stock = value.stock;
+    let company = value.company;
+
+    html = `
+            <tr class="product_list">
+              <td class="col-xs-2"><img src="${img}" ></td>
+              <td class="col-xs-3">${name}</td>
+              <td class="col-xs-3">${price}</td>
+              <td class="col-xs-3">${stock}</td>
+              <td class="col-xs-3">${company}</td>
+              
+              
+    `
+  })
+
+  $('.table-striped tbody').append(html);
+
+  
+
+ })
 
 })
+})
+
+
+//削除機能
+$(function(){
+
+  $("[id^=delete_button]").on('click' , function(event){
+     var productid = $(this).data( 'product-id' )
+     console.log(productid);
+     event.preventDefault();
+     var clickEle = $(this);
+     $.ajax({
+      headers: {'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )},
+      url: "delete" + productid,
+      type: "POST",
+      data: { "_method": "DELETE" },
+      dataType: "html",
+      success: function(){
+        clickEle.parents("tr").remove();      
+      },
+      error: function(xhr){
+          console.log(xhr);
+      }
+     });
+  });
+})
+
+
+
+
          
     </script>
     

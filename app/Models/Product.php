@@ -65,6 +65,7 @@ class Product extends Model
         }
         $products = $query->sortable()->get();
         return $products;
+        
     }
 
 

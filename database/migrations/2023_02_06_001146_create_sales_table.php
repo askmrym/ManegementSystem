@@ -17,6 +17,8 @@ class CreateSalesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('product_id');
             $table->timestamps();
+
+            $table->foreign('product_id')->references('id')->on('products');
         });
     }
 

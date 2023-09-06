@@ -8,6 +8,7 @@ use App\Models\Company;
 use App\Http\Requests\ProductRequest;
 use App\Http\Requests\CompanayRequest;
 use Illuminate\Support\Facades\DB;
+use App\Http\Services\ProductService;
 
 class ProductController extends Controller
 {
@@ -17,10 +18,11 @@ class ProductController extends Controller
         $this->product = new Product();
     }
 
+
+    
     public function showList(Request $request) {
 
         
-
           //検索機能  
           $keyword = $request->input('keyword');
           $company_id = $request->input('company_id');  
@@ -28,6 +30,7 @@ class ProductController extends Controller
           $kagenprice = $request->input('kagenprice');
           $jougenstock = $request->input('jougenstock');
           $kagenstock = $request->input('kagenstock');
+        
        
        
        $products = $this->product
@@ -50,8 +53,8 @@ class ProductController extends Controller
             'kagenstock' => $kagenstock
         ]);
         
+    }
 
-}
 
     //詳細画面
     public function showDetail($id) {
@@ -110,30 +113,11 @@ class ProductController extends Controller
     }
 
     //削除機能
-    public function delete($id){
-        {
-            try{
-                $this->product->delete($id);
-                $status = "success";
-                $message = "削除が完了しました";
-                $returnArr = [
-                    'status' => $status,
-                    'message' => $message
-                ];
-                return response()->json($returnArr);
+   public function delete($id){
+     $product = Product::find($id);
 
-            }catch(\Trowable $th){
-               $status= "error";
-               $message = '削除に失敗しました';
-               $returnArr=[
-                'status'=> $status,
-                'message' => $message
-               ];
-
-            return response()->json($returnArr);
-            }
-        }
-    }
+     $product->delete();
+   }
 
 
     public function create(Request $request)
