@@ -178,7 +178,7 @@ $(function(){
      var clickEle = $(this);
      $.ajax({
       headers: {'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )},
-      url: "delete" + productid,
+      url: "{{ route('list.delete' , $product->id) }}",
       type: "POST",
       data: { "_method": "DELETE" },
       dataType: "html",
