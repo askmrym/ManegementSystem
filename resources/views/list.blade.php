@@ -119,12 +119,12 @@ $(function(){
 $(".search-icon").on('click', function () {
    //もともとある要素を空にする
 
- let keyword = $("#product_name").val();
- let companyName = $("#company_id").val();
- let jougenprice = $("#jougenprice").val();
- let kagenprice = $("#kagenprice").val();
- let jougenstock = $("#jougenstock").val();
- let kagenstock = $("#kagenstock").val();
+ var keyword = $("#product_name").val();
+ var companyName = $("#company_id").val();
+ var jougenprice = $("#jougenprice").val();
+ var kagenprice = $("#kagenprice").val();
+ var jougenstock = $("#jougenstock").val();
+ var kagenstock = $("#kagenstock").val();
 
  if(!keyword & companyName & jougenprice & kagenprice & jougenstock & kagenstock){
   return false;
@@ -178,7 +178,7 @@ $(function(){
      var clickEle = $(this);
      $.ajax({
       headers: {'X-CSRF-TOKEN': $( 'meta[name="csrf-token"]' ).attr( 'content' )},
-      url: "{{ route('list.delete' , $product->id) }}",
+      url: "delete" + productid,
       type: "POST",
       data: { "_method": "DELETE" },
       dataType: "html",

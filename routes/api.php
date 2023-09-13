@@ -1,7 +1,8 @@
 <?php
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\SaleController;
+use App\Http\Controllers\SalesController;
+use Illuminate\Support\Facades\Route;
 
 
 /*
@@ -22,6 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 
-Route::post('/purchase','API\SaleController@processPurchase');
+Route::post('/purchase','SalesController@processPurchase');
 
 
