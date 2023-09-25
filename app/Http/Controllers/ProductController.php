@@ -34,7 +34,7 @@ class ProductController extends Controller
        
        
        $products = $this->product
-       ->serch($keyword, $company_id, $jougenprice, $kagenprice, $jougenstock, $kagenstock);
+       ->search($keyword, $company_id, $jougenprice, $kagenprice, $jougenstock, $kagenstock);
        
 
        //会社名DB取得

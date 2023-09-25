@@ -38,7 +38,7 @@ class Product extends Model
         'updated_at',
     ];
 
-    public function serch($keyword, $company_id,$jougenprice, $kagenprice, $jougenstock, $kagenstock){
+    public function search($keyword, $company_id,$jougenprice, $kagenprice, $jougenstock, $kagenstock){
           
         $query = Product::query();
         if(!empty($keyword)){

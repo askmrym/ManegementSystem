@@ -6,7 +6,7 @@
 
   <a href="{{ route('create') }}">新規商品登録</a>
 
-  <form action="{{ route('list') }}" method="GET">
+  <form  method="GET">
     @csrf
 
   <!-- 検索機能 -->
@@ -55,13 +55,15 @@
     </div>
   </div>
   <div>
-    <button type="submit" class="search-icon">検索</button>
+  <button  type="button" class="btn btn-search" id="search_button">検索</button> 
+    
     <button>
       <a href="{{ route('list')}}" class="text-white">
         クリア
       </a>
     </button>
   </div>
+  {{ csrf_field() }}
 </form>
 
   
@@ -83,10 +85,10 @@
           <th>削除</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody class='list'>
         @foreach($products as $product)
         @csrf
-        <tr  id="row_{{ $product->id }}">
+        <tr  id="row_{{ $product->id }}" class='result_data'>
             <td class="px-4 py-3">{{ $product->id }}</td>
             <td class="px-4 py-3"><img src="{{asset('storage/'.$product->img_path) }}" width=25%></td>
             <td class="px-4 py-3">{{ $product->product_name }}</td>
@@ -114,11 +116,11 @@
         <script>
 
 //検索機能
-
 $(function(){
-$(".search-icon").on('click', function () {
-   //もともとある要素を空にする
 
+
+  $("#search_button").on('click' ,  function () {
+    
  var keyword = $("#product_name").val();
  var companyName = $("#company_id").val();
  var jougenprice = $("#jougenprice").val();
@@ -131,45 +133,34 @@ $(".search-icon").on('click', function () {
  }//検索ワードが全てからの時はなにも返さない
 
  $.ajax({
-  typr: 'GET',
+  type: 'GET',
   url: "{{ route('list') }}",
-  dataType: 'json'
-
-
- }).done(function (data) {
-  let html = "";
-  $.each(data, function (list, value){
-    let id = value.id;
-    let img = value.img;
-    let name = value.name;
-    let price = value.price;
-    let stock = value.stock;
-    let company = value.company;
-
-    html = `
-            <tr class="product_list">
-              <td class="col-xs-2"><img src="${img}" ></td>
-              <td class="col-xs-3">${name}</td>
-              <td class="col-xs-3">${price}</td>
-              <td class="col-xs-3">${stock}</td>
-              <td class="col-xs-3">${company}</td>
-              
-              
-    `
-  })
-
-  $('.table-striped tbody').append(html);
+  dataType: 'html',
+  data:{
+    'product_name' : keyword,
+    'company_id' : companyName,
+    'jougenprice' : jougenprice,
+    'kagenprice' :kagenprice,
+    'jougenstock' : jougenstock,
+    'kagenstock' : kagenstock
+  },
 
   
 
+ }).done(function (data) {
+
+  let products = $(data).find('.links');
+  $('.links').html(products);
+  
+  
  })
 
 })
-})
+
 
 
 //削除機能
-$(function(){
+
 
   $("[id^=delete_button]").on('click' , function(event){
      var productid = $(this).data( 'product-id' )
